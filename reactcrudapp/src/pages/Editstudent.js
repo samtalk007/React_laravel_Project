@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
+
 
 class Editstudent extends Component{
 
@@ -36,7 +38,12 @@ class Editstudent extends Component{
         const stud_id = this.props.match.params.id;
         const res = await axios.put(`http://localhost:8000/api/update-student/${stud_id}`, this.state);
         if(res.data.status === 200){
-            console.log(res.data.message);
+            //console.log(res.data.message);
+            swal({
+                title: "Updated!",
+                text: res.data.message,
+                icon: "success",
+              });
             this.setState({
                 name:'',
                 course:'',

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import swal from 'sweetalert';
+
 
 class Student extends Component{
 
@@ -11,13 +13,29 @@ class Student extends Component{
    
     async componentDidMount(){
 
-        const res = await axios.get('http://localhost:8000/api/students');
+        const res = await axios.get(`http://localhost:8000/api/students`);
         //console.log(res);
         if(res.data.status === 200){
             this.setState({
                 students: res.data.students,
                 loading: false,
             });
+        }
+    }
+
+    deleteStudent = async (e, id) => {
+        const thisclickedFunda = e.currentTarget;
+        thisclickedFunda.innerText = "Deleting";
+        const res = await axios.delete(`http://localhost:8000/api/delete-student/${id}`);  
+
+        if(res.data.status === 200){
+            thisclickedFunda.closest("tr").remove();
+            //console.log(res.data.message);
+            swal({
+                title: "Deleted!",
+                text: res.data.message,
+                icon: "danger",
+              });
         }
     }
 
@@ -45,7 +63,7 @@ class Student extends Component{
                             <Link to={`edit-student/${item.id}`} className="btn btn-warning btn-sm">Edit</Link>
                         </td>
                         <td>
-                            <button type='button' className='btn btn-danger btn-sm'>Delete</button>
+                            <button type='button' onClick={(e) => this.deleteStudent(e, item.id)} className='btn btn-danger btn-sm'>Delete</button>
                         </td>
                     </tr>
                 );

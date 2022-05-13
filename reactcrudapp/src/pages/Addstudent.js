@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
 
 class Addstudent extends Component{
 
@@ -21,7 +22,13 @@ class Addstudent extends Component{
         e.preventDefault();
         const res = await axios.post(`http://localhost:8000/api/add-student`, this.state);
         if(res.data.status === 200){
-            console.log(res.data.message);
+           // console.log(res.data.message);
+
+           swal({
+            title: "Added!",
+            text: res.data.message,
+            icon: "success",
+          });
             this.setState({
                 name:'',
                 course:'',

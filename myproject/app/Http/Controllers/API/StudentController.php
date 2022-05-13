@@ -43,4 +43,10 @@ class StudentController extends Controller
 
         return response()->json(['status'=>200,'message'=>'Updated successfully..!',]);
     }
+
+    public function destroy($id){
+        $student = Student::find($id);
+        $student->delete();
+        return response()->json(['status'=>200,'message'=>'Student deleted successfully',]);
+    }
 }
